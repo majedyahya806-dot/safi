@@ -1,0 +1,3 @@
+-keep class sa.safi.** { *; }
+-keep class androidx.work.** { *; }
+-dontwarn androidx.work.**

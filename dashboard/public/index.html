@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>صافي - لوحة التحكم</title>
+<style>
+  body{font-family:'Tajawal',sans-serif;background:#0B0F1A;color:#F3F6FA;margin:0;padding:20px}
+  .card{background:#151B2B;border:1px solid #232B42;border-radius:16px;padding:20px;margin-bottom:16px}
+  .primary{color:#21E0B0} .critical{color:#FF5A6A}
+  .btn{background:#21E0B0;color:#0B0F1A;border:none;padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<h1>صافي <span class="primary">Sāfi</span> - لوحة التحكم</h1>
+<p style="color:#A8B2C7">يرى المستخدم حسابه هو فقط: أجهزته، نتائجه، منحنى Score، سجل دخول</p>
+
+<div class="card">
+  <h3>أجهزتي</h3>
+  <div id="devices">جاري التحميل...</div>
+</div>
+
+<div class="card">
+  <h3>النتائج المفتوحة مجمعة</h3>
+  <div id="findings">جاري التحميل...</div>
+</div>
+
+<div class="card">
+  <h3>منحنى Trust Score</h3>
+  <svg width="100%" height="120" viewBox="0 0 300 120" style="background:#1D2438;border-radius:10px">
+    <polyline points="0,100 50,80 100,85 150,60 200,70 250,30 300,20" fill="none" stroke="#21E0B0" stroke-width="3"/>
+  </svg>
+</div>
+
+<div class="card">
+  <h3>تصدير تقرير PDF</h3>
+  <p style="font-size:13px;color:#A8B2C7">باسمك الأول والعائلة - للتقديم الرسمي</p>
+  <button class="btn" onclick="alert('سيتم تصدير PDF باسم المستخدم - يتطلب تسجيل دخول')">تصدير PDF</button>
+</div>
+
+<script>
+async function load(){
+  try{
+    const res = await fetch('/api/v1/dashboard/data', {headers:{'Authorization':'Bearer demo'}});
+    const data = await res.json();
+    document.getElementById('devices').innerHTML = JSON.stringify(data.devices || [], null, 2);
+    document.getElementById('findings').innerHTML = JSON.stringify(data.findings || [], null, 2);
+  }catch(e){
+    document.getElementById('devices').innerHTML = 'يتطلب تسجيل دخول - Demo mode: 1 جهاز، 2 تهديد';
+    document.getElementById('findings').innerHTML = 'Demo: APP_HIDDEN_NO_LAUNCHER - حرج';
+  }
+}
+load();
+</script>
+</body>
+</html>
